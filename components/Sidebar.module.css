@@ -12,10 +12,10 @@
     position: fixed;
     height: 100%;
     width: 15vw;
-    background: #ffffff3a;
+    background: linear-gradient(180deg, rgb(17, 24, 39) 0%, rgb(0, 0, 0) 100%);
     z-index: 100;
-    transition: all 0.5s ease;
-    background-color: rgb(0, 0, 0);
+    transition: all 0.3s ease;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
   }
   .icon {
     transform: scale(1.4);
@@ -31,14 +31,16 @@
     left: 0;
     bottom: 0;
     width: 100%;
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
     font-size: 90%;
     user-select: none;
-    background-color: aliceblue;
+    background: linear-gradient(90deg, rgb(17, 24, 39) 0%, rgb(0, 0, 0) 50%, rgb(17, 24, 39) 100%);
     display: grid;
     grid-auto-flow: column;
     flex-direction: row;
     justify-content: stretch;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
   }
   .icon {
     transform: scale(1.6);
@@ -47,12 +49,11 @@
 
 @media (max-width: 500px) {
   .sidebar {
-    background-color: #000000;
+    background: linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(17, 24, 39) 50%, rgb(0, 0, 0) 100%);
     display: grid;
     grid-auto-flow: column;
     flex-direction: row;
     justify-content: stretch;
-    /* padding bottom 15px */
   }
   .title {
     display: none;

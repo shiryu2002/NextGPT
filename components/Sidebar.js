@@ -3,7 +3,6 @@ import { SidebarData } from "./SidebarData";
 import styles from "./Sidebar.module.css";
 import Head from "next/head";
 import { useRouter } from "next/router";
-// css
 
 function Sidebar() {
   const router = useRouter();
@@ -20,12 +19,11 @@ function Sidebar() {
           }
         })}
         <link rel="icon" href="/Ncrates.png" />
-        <script src="https://cdn.tailwindcss.com"></script>
       </Head>
       <ul className={styles.sidebar}>
         {SidebarData.map((val, key) => {
           return (
-            <div className="bg-black" key={key}>
+            <div className="bg-gradient-to-r from-gray-900 to-black" key={key}>
               <li
                 onClick={() => {
                   router.push({
@@ -35,16 +33,16 @@ function Sidebar() {
                 }}
                 key={key}
                 className={`
-                ${router.pathname == val.path && "border-4 border-gray-800"}
+                ${router.pathname == val.path && "ring-4 ring-blue-500 ring-offset-2"}
                 md:m-4 lg:m-4 
                 object-center
                 flex flex-row justify-center items-center 
                 lg:justify-around lg:text-xl
                 lg:p-6 
-                hover:shadow-2xl py-4 rounded-full ${
+                hover:shadow-2xl py-4 rounded-2xl cursor-pointer ${
                   router.pathname == val.path
-                    ? "bg-white text-black scale-125 lg:scale-100 -translate-y-2 lg:-translate-y-0 transition ease-in-out duration-500"
-                    : " "
+                    ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white scale-110 lg:scale-105 -translate-y-2 lg:-translate-y-0 transition-all ease-in-out duration-300 shadow-lg"
+                    : "hover:bg-gray-800 hover:scale-105 transition-all duration-200"
                 }`}
               >
                 <div className={`${styles.icon} `}>
