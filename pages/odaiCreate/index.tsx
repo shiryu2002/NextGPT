@@ -1,31 +1,21 @@
-import Head from "next/head";
-import React from "react";
-import Sidebar from "../../components/Sidebar";
-import global from "../../styles/global.module.css";
-import { useState } from "react";
-import { CircularProgress } from "@mui/material";
+import React, { useState } from "react";
+import Layout from "../../components/layout/Layout";
+import Loading from "../../components/ui/Loading";
+import { addOdai } from "../../services/odaiService";
 
-interface Odai {
-  name: string;
-  odai: string;
-  ngList: string[];
-  limit: number;
-  odaiScore: number;
-  official: boolean;
-}
+type SubmitState = "done" | "error" | "ing" | "not";
 
-function odaiCreate() {
+export default function OdaiCreate() {
   const [odai, setOdai] = useState<string>("");
   const [ngList, setNgList] = useState<string[]>([]);
   const [ngTmp, setNgTmp] = useState<string>("");
   const [limit, setLimit] = useState<number>(10);
   const [odaiScore, setOdaiScore] = useState<number>(0);
   const [official, setOfficial] = useState<boolean>(false);
-  const [submit, setSubmit] = useState<"done" | "error" | "ing" | "not">("not");
+  const [submit, setSubmit] = useState<SubmitState>("not");
   const [name, setName] = useState<string>("匿名");
 
   async function fetchAddOdai() {
-    // 以下の内容でよろしいですか？ という確認
     const firstCheck = confirm(
       "以下の内容でよろしいですか？\n" +
         "名前:" +
@@ -48,22 +38,14 @@ function odaiCreate() {
 
     setSubmit("ing");
     try {
-      const res = await fetch("/api/addOdai", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name,
-          odai: odai,
-          ngList: ngList,
-          limit: limit,
-          score: odaiScore,
-          official: official,
-        }),
+      await addOdai({
+        name,
+        odai,
+        ngList,
+        limit,
+        score: odaiScore,
+        official,
       });
-      const data = await res.json();
-      console.log(data);
       setSubmit("done");
     } catch (e) {
       console.log(e);
@@ -109,109 +91,100 @@ function odaiCreate() {
   };
 
   return (
-    <div>
-      <Head>
-        <title>Debug</title>
-      </Head>
-      <Sidebar />
-      <main className={global.container}>
-        <div className="font-bold text-3xl pt-6">お題投稿フォーム</div>
-        <div className="text-xl px-4">
-          NGワードは一つごとに+ボタン､またはEnterを押してください
-        </div>
-        <div className="border-2 border-gray-500 p-4 rounded-xl m-4 lg:w-2/3 w-4/5 text-center text-xl">
-          <div className="text-left p-0 lg:px-16">
-            <input
-              placeholder="あなたの名前"
-              onChange={(e) => setName(e.target.value)}
-              className="border-2 p-1 w-40 lg:w-96"
-            />
-            <br />
-            <input
-              placeholder="お題"
-              onChange={(e) => setOdai(e.target.value)}
-              className="border-2  p-1 w-40 lg:w-96"
-            />
-            <br />
-            <div className="flex flex-row">
-              <form>
-                <input
-                  placeholder="NGワード"
-                  className="border-2 p-1 w-40 lg:w-96"
-                  value={ngTmp.toString()}
-                  onChange={(e) => setNgTmp(e.target.value)}
-                />
-                <button
-                  onClick={(e) => handleAddNg(e)}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  +
-                </button>
-              </form>
-            </div>
-
-            <input
-              placeholder="制限回数"
-              className="border-2 p-1 w-40 lg:w-96"
-              onChange={(e) => setLimit(Number(e.target.value))}
-            />
-            <br />
-            <input
-              placeholder="スコア"
-              className="border-2 p-1 w-40 lg:w-96"
-              hidden={!official}
-              onChange={(e) => setOdaiScore(Number(e.target.value))}
-            />
-            <br />
-          </div>
-
-          <div>
-            <div id="official" className="">
-              公式お題(管理者用):
+    <Layout title="お題投稿フォーム">
+      <div className="font-bold text-3xl pt-6">お題投稿フォーム</div>
+      <div className="text-xl px-4">
+        NGワードは一つごとに+ボタン､またはEnterを押してください
+      </div>
+      <div className="border-2 border-gray-500 p-4 rounded-xl m-4 lg:w-2/3 w-4/5 text-center text-xl">
+        <div className="text-left p-0 lg:px-16">
+          <input
+            placeholder="あなたの名前"
+            onChange={(e) => setName(e.target.value)}
+            className="border-2 p-1 w-40 lg:w-96"
+          />
+          <br />
+          <input
+            placeholder="お題"
+            onChange={(e) => setOdai(e.target.value)}
+            className="border-2  p-1 w-40 lg:w-96"
+          />
+          <br />
+          <div className="flex flex-row">
+            <form>
               <input
-                type="checkbox"
-                checked={official}
-                onChange={() =>
-                  official ? setOfficial(false) : checkOfficial()
-                }
+                placeholder="NGワード"
+                className="border-2 p-1 w-40 lg:w-96"
+                value={ngTmp.toString()}
+                onChange={(e) => setNgTmp(e.target.value)}
               />
-            </div>
-            <div> 名前:{name} さん</div>
-            <div> お題:{odai} </div>
-            <div>
-              制限回数:
-              {limit.toString()}回
-            </div>
-            <div>点数:{odaiScore.toString()}</div>
-            <div>NGワード:{ngList.join(",")}</div>
+              <button
+                onClick={(e) => handleAddNg(e)}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                +
+              </button>
+            </form>
           </div>
-          <div className="flex justify-end">
-            {" "}
-            <button
-              onClick={() => fetchAddOdai()}
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
-                submit === "ing" || name === "" || odai === ""
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
-              disabled={submit === "ing" || name === "" || odai === ""}
-            >
-              お題追加
-            </button>
-          </div>
+
+          <input
+            placeholder="制限回数"
+            className="border-2 p-1 w-40 lg:w-96"
+            onChange={(e) => setLimit(Number(e.target.value))}
+          />
+          <br />
+          <input
+            placeholder="スコア"
+            className="border-2 p-1 w-40 lg:w-96"
+            hidden={!official}
+            onChange={(e) => setOdaiScore(Number(e.target.value))}
+          />
+          <br />
         </div>
 
-        <CircularProgress
-          size={30}
-          hidden={submit !== "ing"}
-          className="text-xl"
-        />
-        <div hidden={submit !== "done"} className="text-xl">
-          お題を追加しました！
+        <div>
+          <div id="official" className="">
+            公式お題(管理者用):
+            <input
+              type="checkbox"
+              checked={official}
+              onChange={() =>
+                official ? setOfficial(false) : checkOfficial()
+              }
+            />
+          </div>
+          <div> 名前:{name} さん</div>
+          <div> お題:{odai} </div>
+          <div>
+            制限回数:
+            {limit.toString()}回
+          </div>
+          <div>点数:{odaiScore.toString()}</div>
+          <div>NGワード:{ngList.join(",")}</div>
         </div>
-      </main>
-    </div>
+        <div className="flex justify-end">
+          {" "}
+          <button
+            onClick={() => fetchAddOdai()}
+            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
+              submit === "ing" || name === "" || odai === ""
+                ? "opacity-50 cursor-not-allowed"
+                : ""
+            }`}
+            disabled={submit === "ing" || name === "" || odai === ""}
+          >
+            お題追加
+          </button>
+        </div>
+      </div>
+
+      <Loading
+        size={30}
+        className={submit !== "ing" ? "hidden" : "text-xl"}
+      />
+      <div hidden={submit !== "done"} className="text-xl">
+        お題を追加しました！
+      </div>
+    </Layout>
   );
 }
-
-export default odaiCreate;

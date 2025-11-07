@@ -33,3 +33,9 @@ yarn-error.log*
 
 # package-lock.jsonを無視
 package-lock.json
+
+# old refactored files
+*.old.*
+
+# TypeScript build info
+tsconfig.tsbuildinfo

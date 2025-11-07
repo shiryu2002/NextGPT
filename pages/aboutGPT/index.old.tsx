@@ -1,6 +1,10 @@
 import React from "react";
-import Layout from "../../components/layout/Layout";
 import styles from "./index.module.css";
+import Head from "next/head";
+import Sidebar from "../../components/Sidebar";
+import global from "../../styles/global.module.css";
+import { useState } from "react";
+import { useRouter } from "next/router";
 import PersonIcon from "@mui/icons-material/Person";
 
 function SocratesIcon() {
@@ -10,14 +14,17 @@ function SocratesIcon() {
       width={50}
       height={50}
       className={styles.socratesIcon}
-      alt="ソクラテス"
     />
   );
 }
 
-export default function AboutGPT() {
+function gpt() {
   return (
-    <Layout title="GPTとは">
+    <div>
+      <Head>
+        <title>わからせンクラテス！ GPTとは</title>
+      </Head>
+      <Sidebar />
       <div className={styles.title}>～生成系AIってなぁに？～</div>
       <main className={styles.container}>
         <div>
@@ -114,7 +121,7 @@ export default function AboutGPT() {
         <div>
           <SocratesIcon />
           <span>
-            ン「顔認証で例えるとな。たくさんの顔のデータから設定した人の特徴的な部分、いわゆる個性を機械的に見つけ出すんじゃ。それを元に認証しようとしている人の顔を判別する。正しければ認証を通して、間違っていれば弾くわけじゃな」
+            ン「顔認証で例えるとな。たくさんの顔のデータから設定した人の特徴的な部分、いわゆる個性を機械的に見つけ出すんじゃ。それを元に認証しようとしている人の顔を判別する。正しければ認証を通して、間違っていれば」
           </span>
         </div>
         <div>
@@ -208,6 +215,8 @@ export default function AboutGPT() {
           </span>
         </div>
       </main>
-    </Layout>
+    </div>
   );
 }
+
+export default gpt;
