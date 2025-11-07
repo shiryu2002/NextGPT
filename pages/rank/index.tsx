@@ -1,6 +1,5 @@
 import Layout from "../../components/layout/Layout";
 import Loading from "../../components/ui/Loading";
-import styles from "./index.module.css";
 import { useRanking } from "../../hooks/useRanking";
 
 export default function Rank() {
@@ -13,7 +12,7 @@ export default function Rank() {
           {ranking.length === 0 ? "取得中･･･" : "🏆 RANKING 🏆"}
         </h1>
         <Loading size={20} className={loading ? "opacity-100" : "opacity-0"} />
-        <ul className={styles.resultContainer}>
+        <ul className="space-y-4">
           {ranking.map((item, index) => (
             <li
               key={item.id || index}
@@ -42,8 +41,8 @@ export default function Rank() {
               )}
               <div className="flex justify-between items-center">
                 <div>
-                  <span className={`${styles.name} text-xl font-bold text-gray-800`}>{item.name}</span>
-                  <span className={`${styles.san} text-gray-600`}>さん</span>
+                  <span className="text-xl font-bold text-gray-800">{item.name}</span>
+                  <span className="text-gray-600">さん</span>
                 </div>
                 <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   {item.score}点

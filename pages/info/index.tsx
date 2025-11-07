@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Layout from "../../components/layout/Layout";
 import Loading from "../../components/ui/Loading";
-import style from "./index.module.css";
 import { useComments } from "../../hooks/useComments";
 
 export default function Info() {
@@ -32,7 +31,7 @@ export default function Info() {
 
   return (
     <Layout title="インフォ">
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="max-w-4xl mx-auto space-y-6 w-full">
         {/* Links Section */}
         <div className="card space-y-4">
           <Link
@@ -49,7 +48,7 @@ export default function Info() {
           <Link href="/github" className="block">
             <div className="p-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl hover:shadow-xl transition-shadow duration-200">
               <p className="text-lg lg:text-xl font-semibold">
-                🐛 バグ報告、機能要望、改善案<br />はこちら
+                🐛 バグ報告、機能要望、改善案はこちら
                 <span className="text-sm ml-2">(Github)</span>
               </p>
             </div>
@@ -58,7 +57,7 @@ export default function Info() {
           <Link href="/aboutGPT" className="block">
             <div className="p-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl hover:shadow-xl transition-shadow duration-200">
               <p className="text-lg lg:text-xl font-semibold">
-                🤖 GPT、生成系AI、<br />プロンプトエンジニアリングとは
+                🤖 GPT、生成系AI、プロンプトエンジニアリングとは
               </p>
             </div>
           </Link>
